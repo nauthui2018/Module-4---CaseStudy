@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title Page-->
+    <title>List Groups</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Fontfaces CSS-->
+    <link href="../css/font-face.css" rel="stylesheet" media="all">
+    <link href="../vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="../css/theme.css" rel="stylesheet" media="all">
+</head>
+
+<body class="animsition">
+<div class="page-wrapper">
+    <!-- MENU SIDEBAR-->
+    <aside class="menu-sidebar2">
+        <div class="logo">
+            <a href="#">
+                <img src="../images/icon/logo-white.png" alt="Cool Admin" />
+            </a>
+        </div>
+        <div class="menu-sidebar2__content js-scrollbar1">
+            <nav class="navbar-sidebar2">
+                <ul class="list-unstyled navbar__list">
+                    <li class="has-sub">
+                        <a href="/blog"/><i class="fas fa-table"></i>Employees</a>
+                    </li>
+                    <li class="active has-sub">
+                        <a href="/tag"><i class="fas fa-table"></i>Groups</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- END MENU SIDEBAR-->
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-container2">
+        <!-- HEADER DESKTOP-->
+        <header class="header-desktop2">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="header-wrap2">
+                        <div class="logo d-block d-lg-none">
+                            <a href="#">
+                                <img src="../images/icon/logo-white.png" alt="CoolAdmin" />
+                            </a>
+                        </div>
+                        <div class="header-button2">
+                            <div class="header-button-item mr-0 js-sidebar-btn">
+                                <i class="zmdi zmdi-menu"></i>
+                            </div>
+                            <div class="setting-menu js-right-sidebar d-none d-lg-block">
+                                <div class="account-dropdown__body">
+                                    <div class="account-dropdown__item">
+                                        <a href="/logout"><i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <aside class="menu-sidebar2 js-right-sidebar d-block d-lg-none">
+            <div class="logo">
+                <a href="#">
+                    <img src="../images/icon/logo-white.png" alt="Cool Admin" />
+                </a>
+            </div>
+            <div class="menu-sidebar2__content js-scrollbar2">
+                <nav class="navbar-sidebar2">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="active has-sub">
+                            <a href="/blog"/><i class="fas fa-table"></i>Employees</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="/tag"/><i class="fas fa-table"></i>Groups</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="/logout"/><i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END HEADER DESKTOP-->
+
+        <!-- BREADCRUMB-->
+        <section class="au-breadcrumb m-t-75">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="au-breadcrumb-content">
+                                <div class="au-breadcrumb-left mt-1">
+                                    <a class="btn btn-primary btn-sm" href="/tag">List Groups</a>
+                                </div>
+                                <div class="au-breadcrumb-right m-b-10">
+                                    <a class="btn btn-primary btn-sm" href="/blog">Home page</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END BREADCRUMB-->
+
+        <section>
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row m-t-30">
+                        <div class="col-md-12">
+                            <!-- DATA TABLE-->
+                            <div class="table-responsive m-b-40">
+                                <table class="table table-borderless table-data3" id="groupTable">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="table">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- END DATA TABLE-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END PAGE CONTAINER-->
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+<!-- Datatable JS-->
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+    var groups = {} || groups;
+    groups.drawTable = function () {
+        $("#groupTable").DataTable({
+            "lengthMenu": [5, 10, 20, 50],
+            destroy: true,
+            ajax: {
+                url: 'http://localhost:8080/api/tag',
+                method: "GET",
+                datatype: "json",
+                dataSrc: ""
+            },
+            columns: [
+                { data: "id" , name: "id", title: "ID",orderable: true},
+                { data: "name", name : "name" , title: "Name", sortable: true},
+                { data: "id", name : "Action", title : "Action",sortable: false,
+                    orderable: false ,"render": function ( data, type, row, meta ) {
+                        var str = "<a href='javascript:;' title='Edit' style=\"color: darkorange\">" +
+                            "<i class='fa fa-edit mr-1'></i>Edit</a> " +
+                            "<a class='ml-1' href='javascript:;' title='Remove' style=\"color: red\">" +
+                            "<i class='fa fa-trash mr-1'></i>Delete</a>"
+                        return str ;
+                    }
+                }
+            ]
+        });
+    };
+
+    $(document).ready(function () {
+        groups.drawTable();
+    });
+</script>
+</body>
+
+</html>
+<!-- end document-->
