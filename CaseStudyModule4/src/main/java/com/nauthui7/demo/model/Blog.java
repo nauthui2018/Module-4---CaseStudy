@@ -2,13 +2,16 @@ package com.nauthui7.demo.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "blogs")
-public class Blog {
+//@Where(clause="tag_active=0")
+public class Blog implements Serializable {
     @Id
     @Column(name = "blog_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,9 +32,8 @@ public class Blog {
     @Column(name = "blog_modifiedDate")
     private String modifiedDate;
 
-    @ManyToMany(cascade = {
-            CascadeType.ALL
-    })
+    @ManyToMany
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(
             name = "blogs_tags",
             joinColumns = {
@@ -41,10 +43,6 @@ public class Blog {
                     @JoinColumn(name = "tag_id")
             }
     )
-
-    @ManyToOne
-    @JoinColumn(name = "tag_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Tag> tags;
 
     public Blog() {

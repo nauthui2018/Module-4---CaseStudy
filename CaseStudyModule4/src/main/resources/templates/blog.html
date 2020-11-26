@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
           integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
           crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Fontfaces CSS-->
     <link href="../css/font-face.css" rel="stylesheet" media="all">
@@ -23,6 +24,9 @@
 
     <!-- Bootstrap CSS-->
     <link href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css" rel="stylesheet" media="all">
+
+    <!-- include summernote css/js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css" rel="stylesheet">
 
     <!-- Main CSS-->
     <link href="../css/theme.css" rel="stylesheet" media="all">
@@ -46,10 +50,10 @@
             <nav class="navbar-sidebar2">
                 <ul class="list-unstyled navbar__list">
                     <li class="active has-sub">
-                        <a href="/blog"/><i class="fas fa-table"></i>Employees</a>
+                        <a href="/blog"/><i class="fas fa-table"></i>Blogs</a>
                     </li>
                     <li class="has-sub">
-                        <a href="/tag"><i class="fas fa-table"></i>Groups</a>
+                        <a href="/tag"><i class="fas fa-table"></i>Tags</a>
                     </li>
                 </ul>
             </nav>
@@ -95,10 +99,10 @@
                 <nav class="navbar-sidebar2">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a href="/blog"/><i class="fas fa-table"></i>Employees</a>
+                            <a href="/blog"/><i class="fas fa-table"></i>Blogs</a>
                         </li>
                         <li class="has-sub">
-                            <a href="/tag"/><i class="fas fa-table"></i>Groups</a>
+                            <a href="/tag"/><i class="fas fa-table"></i>Tags</a>
                         </li>
                         <li class="has-sub">
                             <a href="/logout"/><i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
@@ -118,7 +122,7 @@
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left mt-1">
                                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
-                                        <i class="zmdi zmdi-plus mr-1"></i>New Employee</button>
+                                        <i class="zmdi zmdi-plus mr-1"></i>New Blog</button>
                                 </div>
                                 <div class="au-breadcrumb-right m-b-10">
                                     <a class="btn btn-primary btn-sm" href="/blog">Home page</a>
@@ -138,19 +142,7 @@
                         <div class="col-md-12">
                             <!-- DATA TABLE-->
                             <div class="table-responsive m-b-40">
-                                <table class="table table-borderless table-data3" id="employeeTable">
-                                    <thead>
-                                    <tr>
-                                        <th>Employee ID</th>
-                                        <th>Group</th>
-                                        <th>Name</th>
-                                        <th>Gender</th>
-                                        <th>Mobile</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="table">
-                                    </tbody>
+                                <table class="table table-borderless table-data3" id="dataTable">
                                 </table>
                             </div>
                             <!-- END DATA TABLE-->
@@ -189,75 +181,36 @@
                     <form id="myForm">
                         <div class="row form-tag">
                             <div class="col-3">
-                                <label>Name</label>
+                                <label>Title</label>
                             </div>
                             <div class="col-9">
-                                <input type="text" id="name" name="name" class="form-control" required>
+                                <input type="text" id="title" name="title" class="form-control" required>
                                 <p style="color: red;display: none" class="ui-state-error-text"></p>
                             </div>
                         </div>
                         <div class="row form-tag">
                             <div class="col-3">
-                                <label for="tag">Group</label>
+                                <label for="tags">Tag</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-control" id="tag" name="tag">
+                                <select class="select2 form-control" id="tags" name="tags" multiple="multiple">
                                 </select>
                             </div>
                         </div>
                         <div class="row form-tag">
                             <div class="col-3">
-                                <label>DOB</label>
+                                <label>Author</label>
                             </div>
                             <div class="col-9">
-                                <input type="date" id="dob" name="dob" class="form-control" required>
+                                <input type="text" id="author" name="author" class="form-control" required>
                             </div>
                         </div>
                         <div class="row form-tag">
                             <div class="col-3">
-                                <label>Gender</label>
+                                <label>Content</label>
                             </div>
                             <div class="col-9">
-                                <select class="form-control" id="gender" name="gender">
-                                    <option value=0>Male</option>
-                                    <option value=1>Female</option>
-                                    <option value=2>Other</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row form-tag">
-                            <div class="col-3">
-                                <label>Mobile</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" id="mobile" name="mobile" class="form-control" required>
-                                <p style="color: red;display: none" class="ui-state-error-text"></p>
-                            </div>
-                        </div>
-                        <div class="row form-tag">
-                            <div class="col-3">
-                                <label>Personal ID</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" id="personalID" name="personalID" class="form-control" required>
-                                <p style="color: red;display: none" class="ui-state-error-text"></p>
-                            </div>
-                        </div>
-                        <div class="row form-tag">
-                            <div class="col-3">
-                                <label>Email</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="email" id="email" name="email" class="form-control" required>
-                                <p style="color: red;display: none" class="ui-state-error-text"></p>
-                            </div>
-                        </div>
-                        <div class="row form-tag">
-                            <div class="col-3">
-                                <label>Address</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" id="address" name="address" class="form-control" required>
+                                <textarea class="summernote form-control" id="content" name="content"></textarea>
                                 <p style="color: red;display: none" class="ui-state-error-text"></p>
                             </div>
                         </div>
@@ -266,9 +219,19 @@
                                 <input type="hidden" id="id" class="form-control" required>
                             </div>
                         </div>
+                        <div class="row form-tag">
+                            <div class="col-9">
+                                <input type="hidden" id="publishedDate" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row form-tag">
+                            <div class="col-9">
+                                <input type="hidden" id="modifiedDate" class="form-control" required>
+                            </div>
+                        </div>
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <input type="submit" class="btn btn-primary" onclick="return blogs.create()"
+                            <input type="submit" class="btn btn-primary" onclick="return blog.create()"
                                    id="submit" value="Save">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
@@ -290,13 +253,19 @@
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
+<!-- Select2 JS-->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+<!-- include summernote css/js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js"></script>
+
 <script>
-    var blogs = {} || blogs;
-    var groups = {} || groups;
-    var groupArray = [];
-    blogs.drawTable = function () {
-        $("#employeeTable").DataTable({
-            destroy: true,
+    var blog = {} || blog;
+    var tag = {} || tag;
+    var allTag = [];
+    var taggedList = [];
+    blog.drawTable = function () {
+        $("#dataTable").DataTable({
             "lengthMenu": [5, 10, 20, 50],
             ajax: {
                 url: 'http://localhost:8080/api/blog',
@@ -305,18 +274,28 @@
                 dataSrc: ""
             },
             columns: [
-                { data: "id" , name: "id", title: "ID",orderable: true},
-                { data: "tag.name", name : "tag" , title: "Group", sortable: false},
-                { data: "name", name : "name" , title: "Name", sortable: true},
-                { data: "gender", name : "gender" , title: "Gender", sortable: false, "render":function (data) {
-                        return blogs.viewGender(data);
-                    }},
-                { data: "mobile", name : "mobile" , title: "Mobile", sortable: false},
+                { data: "id" , name: "id", title: "Blog ID",orderable: true},
+                { data: "title", name : "title" , title: "Title", sortable: true},
+                { data: "author", name : "author" , title: "Author", sortable: true},
+                { data: "publishedDate", name : "publishedDate" , title: "Published", sortable: true},
+                { data: "modifiedDate", name : "modifiedDate" , title: "Modified", sortable: true},
+                {data: "tags", name: "tags", title: "Tag", "render": function (data) {
+                        var str = "";
+                        for (var i=0; i<data.length; i++) {
+                            if (data[i].active == 1) {
+                                str += `<a href="/tag"/>#${data[i].name}</a><br>`
+                            } else {
+                                str += `<i>#${data[i].name}</i><br>`
+                            }
+                        }
+                        return str;
+                    }
+                },
                 { data: "id", name : "Action", title : "Action",sortable: false,
                     orderable: false ,"render": function ( data, type, row, meta ) {
-                        var str = "<a href='javascript:;' title='Edit' onclick='blogs.get("+ data +")' data-toggle=\"modal\" data-target=\"#myModal\" style=\"color: darkorange\">" +
+                        var str = "<a href='javascript:;' title='Edit' onclick='blog.get("+ data +")' data-toggle=\"modal\" data-target=\"#myModal\" style=\"color: darkorange\">" +
                             "<i class='fa fa-edit mr-1'></i>Edit</a> " +
-                            "<a class='ml-1' href='javascript:;' title='Remove' onclick='blogs.remove("+ data +")'  style=\"color: red\">" +
+                            "<a class='ml-1' href='javascript:;' title='Remove' onclick='blog.remove("+ data +")'  style=\"color: red\">" +
                             "<i class='fa fa-trash mr-1'></i>Delete</a>"
                         return str ;
                     }
@@ -325,7 +304,7 @@
         });
     };
 
-    blogs.remove = function (id) {
+    blog.remove = function (id) {
         bootbox.confirm({
             message: "Do you want to delete this blog?",
             buttons: {
@@ -341,11 +320,11 @@
             callback: function (result) {
                 if (result) {
                     $.ajax({
-                        url: "http://localhost:8080/api/blog/" + id,
+                        url: `http://localhost:8080/api/blog/${id}`,
                         method: "DELETE", //"POST"
                         dataType: 'json',
                         success: function (data) {
-                            blogs.drawTable();
+                            blog.reloadTable();
                             toastr.warning('Employee has been deleted successfully', 'INFORMATION:')
                         }
                     });
@@ -354,162 +333,156 @@
         });
     }
 
-    blogs.create = function () {
+    blog.create = function () {
         if ($('#myForm').valid()) {
-            var blog = {};
-            blog.name = $('#name').val();
-            blog.tag = groups.findById(parseInt($('#tag').val()));
-            blog.dob = $('#dob').val();
-            blog.gender = $('#gender').val();
-            blog.mobile = $('#mobile').val();
-            blog.personalID = $('#personalID').val();
-            blog.email = $('#email').val();
-            blog.address = $('#address').val();
-            if($('#id').val() === "0") { //Add new
+            var newBlog = {};
+            newBlog.title = $('#title').val();
+            newBlog.author = $('#author').val();
+            newBlog.publishedDate = $('#publishedDate').val();
+            newBlog.tags = tag.getTaggedList($('#tags').val());
+            newBlog.content = $('#content').val();
+            if($('#id').val() === '') { //Add new
+                newBlog.publishedDate = new Date().toLocaleString();
+                newBlog.modifiedDate = new Date().toLocaleString();
                 $.ajax({
                     url: "http://localhost:8080/api/blog",
                     method: "POST", //"POST"
                     dataType: 'json',
                     contentType: "application/json",
-                    data: JSON.stringify(blog),
+                    data: JSON.stringify(newBlog),
                     success: function (data) {
-                        toastr.success('Customer has been created successfully', 'INFORMATION:');
                         $('#myModal').modal('hide');
-                        blogs.drawTable();
+                        blog.reloadTable();
+                        toastr.success('Blog has been created successfully', 'INFORMATION:');
                     }
                 })
             } else {
-                blog.id = $('#id').val();
+                newBlog.id = $('#id').val();
+                newBlog.modifiedDate = new Date().toLocaleString();
                 $.ajax({
                     url: "http://localhost:8080/api/blog",
                     method: "PUT",
                     dataType: 'json',
                     contentType: "application/json",
-                    data: JSON.stringify(blog),
+                    data: JSON.stringify(newBlog),
                     success: function (data) {
-                        toastr.success('Customer has been updated successfully', 'INFORMATION:');
                         $('#myModal').modal('hide');
-                        blogs.drawTable();
+                        blog.reloadTable();
+                        toastr.success('Blog has been updated successfully', 'INFORMATION:');
                     }
                 });
             }
         }
-        blogs.reset();
+        blog.reset();
         return false;
     }
 
-    blogs.get = function (id) {
+    blog.get = function (id) {
         $.ajax({
-            url: "http://localhost:8080/api/blog/" + id,
+            url: `http://localhost:8080/api/blog/${id}`,
             method: "GET",
             dateType: "json",
             success: function (data) {
                 $('#id').val(data.id);
-                $('#name').val(data.name);
-                $('#tag').val(data.tag.id);
-                $('#dob').val(data.dob);
-                $('#gender').val(data.gender.toString());
-                $('#mobile').val(data.mobile);
-                $('#personalID').val(data.personalID);
-                $('#email').val(data.email);
-                $('#address').val(data.address);
+                $('#title').val(data.title);
+                $('#author').val(data.author);
+                $('#publishedDate').val(data.publishedDate);
+                $('#modifiedDate').val(data.modifiedDate);
+                $('#tags').val(tag.getTaggedListID(data.tags)).trigger('change');
+                $('#content').val(data.content);
                 $('#myModal').find('.modal-title').text('Update blog');
                 $('#submit').text("Update");
             }
         })
     }
 
-    groups.listGroups = function () {
+    tag.getAllTags = function () {
         $.ajax({
-            url: "http://localhost:8080/api/tag",
+            url: "http://localhost:8080/api/tag/active/1",
             method: "GET",
             dataType: "json",
             success: function (data) {
-                groupArray = data;
+                allTag = data;
                 $.each(data, function (i, v) {
-                    $('#tag').append(
+                    $('#tags').append(
                         `<option value='${v.id}'>${v.name}</option>`
                     );
                 });
-                blogs.reset();
+                blog.reset();
             }
         });
     }
 
-    groups.findById = function (id) {
-        for (let i = 0; i < groupArray.length; i++) {
-            if (id === groupArray[i].id) {
-                return groupArray[i];
+    tag.getTaggedList = function (id) {
+        var taggedList = [];
+        for (let i = 0; i < allTag.length; i++) {
+            for(let j=0; j<id.length; j++) {
+                if (+id[j] === allTag[i].id) {
+                    taggedList.push(allTag[i]);
+                }
             }
         }
-        return null;
+        return taggedList;
     }
 
-    blogs.reset = function () {
-        $('#name').val('');
-        $('#tag').val(0);
-        $('#dob').val('');
-        $('#gender').val('');
-        $('#mobile').val('');
-        $('#personalID').val('');
-        $('#email').val('');
-        $('#address').val('');
+    tag.getTaggedListID = function (tags) {
+        var taggedListID = [];
+        for (let i = 0; i <tags.length; i++) {
+            taggedListID.push(tags[i].id)
+        }
+        return taggedListID;
+    }
+
+    blog.reset = function () {
+        $('#title').val('');
+        $('#tags').val(0);
+        $('#author').val('');
+        $('#content').val('');
+        $('#publishedDate').val('');
+        $('#modifiedDate').val('');
         $('#myModal').find('.modal-title').text('Create new blog');
         $('#submit').text("Save");
     }
 
+    blog.reloadTable = function () {
+        $("#dataTable").DataTable().ajax.reload();
+    }
+
     $(document).ready(function () {
-        blogs.drawTable();
-        groups.listGroups();
+        blog.drawTable();
+        tag.getAllTags();
+        $('.select2').select2();
+        $('.summernote').summernote({
+            placeholder: 'Enter content....',
+            tabsize: 2,
+            height: 300,
+            minHeight: 100,
+            maxHeight: 500,
+            focus: true,
+        });
         $('#myForm').validate({
             rules: {
-                name: {
+                title: {
                     required: true,
-                    minlength: 5,
-                    maxlength: 30,
+                    maxlength: 300,
                 },
-                tag: "required",
-                dob: "required",
-                gender: "required",
-                mobile: {
+                author: {
                     required: true,
-                    regex: "^[0-9]{10}$",
+                    maxlength: 50,
                 },
-                personalID: "required",
-                email: {
+                content: {
                     required: true,
-                    regex: "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}",
+                    minlength: 100,
+                    maxlength: 10000,
                 },
-                address: "required",
             },
             messages: {
-                name: "Please input your name!!!",
-                tag: "Please select your tag!!!",
-                dob: "Please select your DOB!!!",
-                gender: "Please select your gender!!!",
-                mobile: "Please input your mobile!!!",
-                personalID: "Please input your personal ID!!!",
-                email: "Please input your email again!!!",
-                address: "Please input your address!!!",
+                title: "Title is too long!!!",
+                author: "Your name is too long!!!",
+                content: "Content doesn't meet length requirement!!!",
             }
         });
     });
-
-    blogs.viewGender = function (gender) {
-        switch (gender) {
-            case 0:
-                return "Male";
-                break;
-            case 1:
-                return "Female";
-                break;
-            case 2:
-                return  "Other";
-                break;
-            default:
-                return  "Not chose gender";
-        }
-    }
 
     $.validator.addMethod(
         "regex",

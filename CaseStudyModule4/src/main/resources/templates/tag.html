@@ -12,7 +12,6 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css" rel="stylesheet">
 
     <!-- Fontfaces CSS-->
     <link href="../css/font-face.css" rel="stylesheet" media="all">
@@ -40,10 +39,10 @@
             <nav class="navbar-sidebar2">
                 <ul class="list-unstyled navbar__list">
                     <li class="has-sub">
-                        <a href="/blog"/><i class="fas fa-table"></i>Employees</a>
+                        <a href="/blog"/><i class="fas fa-table"></i>Blogs</a>
                     </li>
                     <li class="active has-sub">
-                        <a href="/tag"><i class="fas fa-table"></i>Groups</a>
+                        <a href="/tag"><i class="fas fa-table"></i>Tags</a>
                     </li>
                 </ul>
             </nav>
@@ -89,10 +88,10 @@
                 <nav class="navbar-sidebar2">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a href="/blog"/><i class="fas fa-table"></i>Employees</a>
+                            <a href="/blog"/><i class="fas fa-table"></i>Blogs</a>
                         </li>
                         <li class="has-sub">
-                            <a href="/tag"/><i class="fas fa-table"></i>Groups</a>
+                            <a href="/tag"/><i class="fas fa-table"></i>Tags</a>
                         </li>
                         <li class="has-sub">
                             <a href="/logout"/><i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
@@ -111,7 +110,8 @@
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left mt-1">
-                                    <a class="btn btn-primary btn-sm" href="/tag">List Groups</a>
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">
+                                        <i class="zmdi zmdi-plus mr-1"></i>New Tag</button>
                                 </div>
                                 <div class="au-breadcrumb-right m-b-10">
                                     <a class="btn btn-primary btn-sm" href="/blog">Home page</a>
@@ -131,16 +131,7 @@
                         <div class="col-md-12">
                             <!-- DATA TABLE-->
                             <div class="table-responsive m-b-40">
-                                <table class="table table-borderless table-data3" id="groupTable">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="table">
-                                    </tbody>
+                                <table class="table table-borderless table-data3" id="dataTable">
                                 </table>
                             </div>
                             <!-- END DATA TABLE-->
@@ -162,6 +153,51 @@
         </section>
         <!-- END PAGE CONTAINER-->
     </div>
+
+    <!-- Modal Create -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Create new tag</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form id="myForm">
+                        <div class="row form-tag">
+                            <div class="col-3">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-9">
+                                <input type="text" id="name" name="name" class="form-control" required>
+                                <p style="color: red;display: none" class="ui-state-error-text"></p>
+                            </div>
+                        </div>
+                        <div class="row form-tag">
+                            <div class="col-9">
+                                <input type="hidden" id="id" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row form-tag">
+                            <div class="col-9">
+                                <input type="hidden" id="active" value="1" class="form-control" required>
+                            </div>
+                        </div>
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <input type="submit" class="btn btn-primary" onclick="return tag.create()"
+                                   id="submit" value="Save">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -176,11 +212,10 @@
 <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
-    var groups = {} || groups;
-    groups.drawTable = function () {
-        $("#groupTable").DataTable({
+    var tag = {} || tag;
+    tag.drawTable = function () {
+        $("#dataTable").DataTable({
             "lengthMenu": [5, 10, 20, 50],
-            destroy: true,
             ajax: {
                 url: 'http://localhost:8080/api/tag',
                 method: "GET",
@@ -190,11 +225,20 @@
             columns: [
                 { data: "id" , name: "id", title: "ID",orderable: true},
                 { data: "name", name : "name" , title: "Name", sortable: true},
+                { data: "active", name : "active" , title: "Active", "render": function (data) {
+                        if (data === 1) {
+                            return "Yes";
+                        }
+                        if (data === 0) {
+                            return "No";
+                        }
+                    }
+                },
                 { data: "id", name : "Action", title : "Action",sortable: false,
                     orderable: false ,"render": function ( data, type, row, meta ) {
-                        var str = "<a href='javascript:;' title='Edit' style=\"color: darkorange\">" +
+                        var str = "<a href='javascript:;' title='Edit' onclick='tag.get("+ data +")' data-toggle=\"modal\" data-target=\"#myModal\" style=\"color: darkorange\">" +
                             "<i class='fa fa-edit mr-1'></i>Edit</a> " +
-                            "<a class='ml-1' href='javascript:;' title='Remove' style=\"color: red\">" +
+                            "<a class='ml-1' href='javascript:;' title='Remove' onclick='tag.remove("+ data +")'  style=\"color: red\">" +
                             "<i class='fa fa-trash mr-1'></i>Delete</a>"
                         return str ;
                     }
@@ -203,9 +247,122 @@
         });
     };
 
+    tag.remove = function (id) {
+        bootbox.confirm({
+            message: "Do you want to delete this blog?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "http://localhost:8080/api/tag/" + id,
+                        method: "DELETE", //"POST"
+                        dataType: 'json',
+                        success: function (data) {
+                            tag.reloadTable();
+                            toastr.warning('Tag has been deleted successfully', 'INFORMATION:')
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    tag.create = function () {
+        if ($('#myForm').valid()) {
+            var newTag = {};
+            newTag.name = $('#name').val();
+            newTag.active = $('#active').val();
+            if($('#id').val() === '') { //Add new
+                $.ajax({
+                    url: "http://localhost:8080/api/tag",
+                    method: "POST", //"POST"
+                    dataType: 'json',
+                    contentType: "application/json",
+                    data: JSON.stringify(newTag),
+                    success: function (data) {
+                        $('#myModal').modal('hide');
+                        tag.reloadTable();
+                        toastr.success('Tag has been created successfully', 'INFORMATION:');
+                    }
+                })
+            } else {
+                newTag.id = $('#id').val();
+                $.ajax({
+                    url: "http://localhost:8080/api/tag",
+                    method: "PUT",
+                    dataType: 'json',
+                    contentType: "application/json",
+                    data: JSON.stringify(newTag),
+                    success: function (data) {
+                        $('#myModal').modal('hide');
+                        tag.reloadTable();
+                        toastr.success('Tag has been updated successfully', 'INFORMATION:');
+                    }
+                });
+            }
+        }
+        tag.reset();
+        return false;
+    }
+
+    tag.get = function (id) {
+        $.ajax({
+            url: `http://localhost:8080/api/tag/${id}`,
+            method: "GET",
+            dateType: "json",
+            success: function (data) {
+                $('#id').val(data.id);
+                $('#name').val(data.name);
+                $('#active').val(data.active);
+                $('#myModal').find('.modal-title').text('Update tag');
+                $('#submit').text("Update");
+            }
+        })
+    }
+
+    tag.reset = function () {
+        $('#name').val('');
+        $('#myModal').find('.modal-title').text('Create new tag');
+        $('#submit').text("Save");
+    }
+
+    tag.reloadTable = function () {
+        $("#dataTable").DataTable().ajax.reload();
+    }
+
     $(document).ready(function () {
-        groups.drawTable();
+        tag.drawTable();
+        $('#myForm').validate({
+            rules: {
+                name: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 30,
+                },
+            },
+            messages: {
+                name: "Please input your name!!!",
+            }
+        });
     });
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your input."
+    );
 </script>
 </body>
 

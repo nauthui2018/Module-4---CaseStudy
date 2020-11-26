@@ -1,17 +1,17 @@
 package com.nauthui7.demo.controller.admin;
 
-import com.nauthui7.demo.service.Implement.EmployeeService;
+import com.nauthui7.demo.service.Implement.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class EmployeeController {
+public class TagController {
     @Autowired
-    EmployeeService employeeService;
+    TagService tagService;
 
-    @GetMapping("/employee")
+    @GetMapping("/tag")
     public String index() {
-        return "employee";
+        return "tag";
     }
 }
